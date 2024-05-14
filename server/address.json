@@ -1,0 +1,37 @@
+[
+  {
+    "address_line1": "House no 44",
+    "address_line2": "Sector 3, Greater Noida",
+    "state": "Uttar Pradesh",
+    "city": "Gautambudh Nagar",
+    "pin_code": 102009
+  },
+  {
+    "address_line1": "House no 45",
+    "address_line2": "Sector 71, Noida",
+    "state": "Uttar Pradesh",
+    "city": "Gautambudh Nagar",
+    "pin_code": 102009
+  },
+  {
+    "address_line1": "House no 325",
+    "address_line2": "Kormangala",
+    "state": "Karnataka",
+    "city": "Bangluru",
+    "pin_code": 102009
+  },
+  {
+    "address_line1": "House no 46",
+    "address_line2": "Sector 3, Greater Noida",
+    "state": "Uttar Pradesh",
+    "city": "Gautambudh Nagar",
+    "pin_code": 102009
+  },
+  {
+    "address_line1": "House no 47",
+    "address_line2": "Sector 3, Greater Noida",
+    "state": "Uttar Pradesh",
+    "city": "Gautambudh Nagar",
+    "pin_code": 102009
+  }
+]

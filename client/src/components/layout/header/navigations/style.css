@@ -1,0 +1,27 @@
+ul.app-main-vavs {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333333;
+}
+
+ul.app-main-vavs li {
+  float: left;
+  margin-right: 10px;
+}
+ul.app-main-vavs li:last {
+  margin-right: 0;
+}
+
+ul.app-main-vavs li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
+
+ul.app-main-vavs li a:hover {
+  background-color: #111111;
+}

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "d6508ef4-8556-432b-a705-5905375ad990",
+    "first_name": "Atul test",
+    "last_name": "Dubey",
+    "email": "soaratul@gmail.com",
+    "password": "$2b$10$UFCo94EdRucBbVwmhifuteEVa3eaiZj/Nt9LlNByM.j.XV9qQvKpu",
+    "preferd_payment_method": "Hello",
+    "address_line1": "House no 46",
+    "address_line2": "Sector 3, Greater Noida",
+    "state": "Uttar Pradesh",
+    "city": "Gautambudh Nagar",
+    "pin_code": 102009
+  }
+]
