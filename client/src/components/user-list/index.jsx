@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ApiService from '../../utils/axios';
 import Table from '../table';
 import { ApiPaths } from '../../constants';
+import { toast } from 'react-toastify';
 
 const headCells = [
   {
@@ -9,64 +10,64 @@ const headCells = [
     numeric: false,
     disablePadding: false,
     label: 'First Name',
-    sortable: true
+    sortable: false
   },
-  // {
-  //   id: 'last_name',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Last Name',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'email',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Email',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'payment_method',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Payment Method',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'address_line1',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Address Line 1',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'address_line2',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Address Line 2',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'state',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'State',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'city',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'City',
-  //   sortable: true
-  // },
-  // {
-  //   id: 'pin_code',
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: 'Pin',
-  //   sortable: true
-  // },
+  {
+    id: 'last_name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Last Name',
+    sortable: false
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+    sortable: false
+  },
+  {
+    id: 'preferd_payment_method',
+    numeric: false,
+    disablePadding: false,
+    label: 'Payment Method',
+    sortable: false
+  },
+  {
+    id: 'address_line1',
+    numeric: false,
+    disablePadding: false,
+    label: 'Address Line 1',
+    sortable: false
+  },
+  {
+    id: 'address_line2',
+    numeric: false,
+    disablePadding: false,
+    label: 'Address Line 2',
+    sortable: false
+  },
+  {
+    id: 'state',
+    numeric: false,
+    disablePadding: false,
+    label: 'State',
+    sortable: false
+  },
+  {
+    id: 'city',
+    numeric: false,
+    disablePadding: false,
+    label: 'City',
+    sortable: false
+  },
+  {
+    id: 'pin_code',
+    numeric: false,
+    disablePadding: false,
+    label: 'Pin',
+    sortable: false
+  },
   {
     id: 'actions',
     numeric: false,
@@ -83,11 +84,17 @@ export default function CorporateList() {
   const [orderBy, setOrderBy] = useState('email');
   const [page, setPage] = useState(0);
   const [count, setCount] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(3);
   const [rows, setRows] = useState([]);
   const [filters, setFilters] = useState('');
-  const [editData, setEditData] = useState({ first_name: '' });
+  const [editData, setEditData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    preferd_payment_method: ''
+  });
   const [refreshList, setRefreshList] = useState('some-random-string');
+  const [reRender, setReRender] = useState('rand-string');
   const handleEditClick = (id) => {
     setEditableRowId(id);
     localStorage.setItem('editableRowId', id);
@@ -99,6 +106,7 @@ export default function CorporateList() {
         const randomString = Math.random().toString(36).slice(2);
         setEditableRowId(null);
         localStorage.setItem('editableRowId', null);
+        toast.success('User details updated successfully!');
         setRefreshList(randomString);
       })
       .catch((error) => {
@@ -119,6 +127,8 @@ export default function CorporateList() {
           ...item,
           first_name_original: item.first_name,
           last_name_original: item.last_name,
+          email_original: item.email,
+          preferd_payment_method_original: item.preferd_payment_method,
           address_line1_original: item.address_line1,
           address_line2_original: item.address_line2,
           state_original: item.state,
@@ -136,8 +146,9 @@ export default function CorporateList() {
         };
       });
       setCount(result.data.pagination.totalItems);
-
       setRows(items);
+      const randomString = Math.random().toString(36).slice(2);
+      setReRender(randomString);
     });
   }, [page, order, orderBy, filters, rowsPerPage, refreshList]);
 
@@ -165,6 +176,42 @@ export default function CorporateList() {
           ) : (
             item.first_name_original
           ),
+        last_name:
+          editableRowId === item.id ? (
+            <input
+              name='last_name'
+              id='last_name'
+              type='text'
+              value={editData.last_name}
+              onChange={setValue}
+            />
+          ) : (
+            item.last_name_original
+          ),
+        email:
+          editableRowId === item.id ? (
+            <input
+              name='email'
+              id='email'
+              type='text'
+              value={editData.email}
+              onChange={setValue}
+            />
+          ) : (
+            item.email_original
+          ),
+        preferd_payment_method:
+          editableRowId === item.id ? (
+            <input
+              name='preferd_payment_method'
+              id='preferd_payment_method'
+              type='text'
+              value={editData.preferd_payment_method}
+              onChange={setValue}
+            />
+          ) : (
+            item.preferd_payment_method_original
+          ),
         actions:
           editableRowId === item.id ? (
             <>
@@ -176,8 +223,8 @@ export default function CorporateList() {
           )
       };
     });
-    setRows(items);
-  }, [editableRowId, editData]);
+    if (items.length) setRows(items);
+  }, [editableRowId, editData, reRender]);
 
   useEffect(() => {
     if (editableRowId) {
@@ -186,6 +233,8 @@ export default function CorporateList() {
         const editableData = {
           first_name: row.first_name_original,
           last_name: row.last_name_original,
+          email: row.email_original,
+          preferd_payment_method: row.preferd_payment_method_original,
           address_line1: row.address_line1_original,
           address_line2: row.address_line2_original,
           state: row.state_original,
@@ -195,7 +244,7 @@ export default function CorporateList() {
         setEditData({ ...editableData });
       }
     }
-  }, [editableRowId]);
+  }, [editableRowId, reRender]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'ASC';

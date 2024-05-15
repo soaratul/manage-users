@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const routes = require('./routes');
 const { APP, CORS } = require('./config');
-const { isTrustedError, errorHandler } = require('./middlewares');
+const { errorHandler } = require('./middlewares');
 const { HttpStatusCode, Logger, file } = require('./utils');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -55,7 +55,7 @@ process.on('unhandledRejection', (error) => {
 });
 
 process.on('uncaughtException', (error) => {
-  if (!isTrustedError(error)) {
+  if (!errorHandler.isTrustedError(error)) {
     Logger.log(error);
     process.exit(1);
   }

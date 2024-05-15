@@ -31,6 +31,7 @@ const updateProfileSchema = Yup.object().shape({
         }
       }
     ),
+    preferd_payment_method: Yup.string(),
     address_line1: Yup.string(),
     address_line2: Yup.string().optional(),
     state: Yup.string(),
@@ -38,31 +39,6 @@ const updateProfileSchema = Yup.object().shape({
     pin_code: Yup.string()
   })
 });
-
-// const updateProfileSchema = Yup.object().shape({
-//   params: Yup.object().shape({
-//     id: Yup.number('The must be positive number.')
-//       .min(1, 'The id should be greater than 0.')
-//       .required('User id in param required.')
-//   }),
-//   body: Yup.object().shape({
-//     first_name: Yup.string().required('First name is required'),
-//     last_name: Yup.string().required('Last name is required'),
-//     email: Yup.string()
-//       .required('Email is required')
-//       .test(
-//         'duplicate-email',
-//         'The given email already exists.',
-//         async function validateEmail(value, context) {
-//           try {
-//             return await isEmailAlreadyExists(value, context);
-//           } catch (error) {
-//             Logger.log('Error while checking email address', error);
-//           }
-//         }
-//       )
-//   })
-// });
 
 module.exports = {
   userIdParamSchema,

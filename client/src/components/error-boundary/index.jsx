@@ -8,14 +8,21 @@ class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    console.log('Error from ErrorBoundary.getDerivedStateFromError occured', error)
+    console.log(
+      'Error from ErrorBoundary.getDerivedStateFromError occured',
+      error
+    );
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
     // You can also log the error to an error reporting service
-    console.log('Error from ErrorBoundary.componentDidCatch occured', error, errorInfo);
+    console.log(
+      'Error from ErrorBoundary.componentDidCatch occured',
+      error,
+      errorInfo
+    );
   }
 
   render() {
@@ -24,7 +31,7 @@ class ErrorBoundary extends React.Component {
       return <ErrorPage />;
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }
 

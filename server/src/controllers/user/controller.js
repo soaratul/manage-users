@@ -1,19 +1,13 @@
 const {
-  APP_PERMISSIONS,
-  NotFoundError,
-  response: { sendResponse },
-  ForbiddenError
+  response: { sendResponse }
 } = require('../../utils');
 const { BadRequestError, HttpStatusCode } = require('../../utils');
-const bcrypt = require('bcrypt');
 const {
   readUsersFromFile,
-  writeUserToFile,
   getUserByEmail,
   getUserById,
   updateUser
 } = require('../../utils/user-utils');
-const fs = require('fs').promises;
 
 const getMe = async (req, res, next) => {
   try {
@@ -73,8 +67,14 @@ const list = async (req, res, next) => {
     if (!order) order = 'ASC';
     if (!orderBy) orderBy = 'first_name';
 
-    const rows = await readUsersFromFile();
-    const count = rows.length;
+    const allRows = await readUsersFromFile();
+    const start = page * limit;
+    const rows = [];
+    allRows.forEach((item, index) => {
+      if (index >= start && rows.length < limit) rows.push(item);
+    });
+
+    const count = allRows.length;
 
     const pagination = {
       currentPage: page,
@@ -91,7 +91,7 @@ const list = async (req, res, next) => {
             first_name: item.first_name,
             last_name: item.last_name,
             email: item.email,
-            payment_method: item.preferd_payment_method,
+            preferd_payment_method: item.preferd_payment_method,
             address_line1: item.address_line1,
             address_line2: item.address_line2,
             state: item.state,
@@ -101,84 +101,6 @@ const list = async (req, res, next) => {
         })
       },
       HttpStatusCode.OK
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-const changePassword = async (req, res, next) => {
-  try {
-    const { current_password, new_password } = req.body;
-
-    // Find the user based on the provided username
-    const user = await models.user_master.findOne({
-      where: {
-        id: req.currentUser.id
-      }
-    });
-
-    if (!user) throw new NotFoundError('User not found');
-
-    // Compare the old password with the hashed password stored
-    const isCurrentPasswordMatch = await bcrypt.compare(
-      current_password,
-      user.password
-    );
-
-    if (!isCurrentPasswordMatch)
-      throw new BadRequestError('Current password is not correct');
-
-    // Compare the new password same as old one
-    const isNewasswordIsSameAsOld = await bcrypt.compare(
-      new_password,
-      user.password
-    );
-
-    if (isNewasswordIsSameAsOld)
-      throw new BadRequestError(
-        'New password cannot be the same as the old password'
-      );
-
-    // Update the user's password with the new hashed password
-    user.password = new_password;
-
-    await user.save();
-
-    return sendResponse(
-      res,
-      {},
-      HttpStatusCode.OK,
-      'Password changed successfully'
-    );
-  } catch (error) {
-    next(error);
-  }
-};
-
-const updateProfile = async (req, res, next) => {
-  try {
-    const { first_name, last_name, email } = req.body;
-    const currentUser = req.currentUser;
-
-    await models.user_master.update(
-      {
-        first_name,
-        last_name,
-        email
-      },
-      {
-        where: {
-          id: currentUser.id
-        }
-      }
-    );
-
-    return sendResponse(
-      res,
-      {},
-      HttpStatusCode.OK,
-      'Profile updated successfully'
     );
   } catch (error) {
     next(error);
@@ -206,6 +128,5 @@ module.exports = {
   updateOne,
   list,
   getMe,
-  isEmailAlreadyExists,
-  updateProfile
+  isEmailAlreadyExists
 };
